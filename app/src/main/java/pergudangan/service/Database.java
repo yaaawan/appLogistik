@@ -1162,6 +1162,34 @@ public static boolean updatePengeluaranCategory(int id, String newCategory) {
     }
 }
 
+public static List<Pengeluaran> getPengeluaranByDateRange(LocalDate startDate, LocalDate endDate) {
+    List<Pengeluaran> pengeluaranList = new ArrayList<>();
+    String sql = "SELECT id, item_name, quantity, total_price, date, category FROM pengeluaran WHERE date BETWEEN ? AND ? ORDER BY date DESC";
+
+    try (Connection conn = connect(); 
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setDate(1, java.sql.Date.valueOf(startDate));
+        stmt.setDate(2, java.sql.Date.valueOf(endDate));
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String itemName = rs.getString("item_name");
+                int quantity = rs.getInt("quantity");
+                double totalPrice = rs.getDouble("total_price");
+                LocalDate date = rs.getDate("date").toLocalDate();
+                String category = rs.getString("category");
+
+                pengeluaranList.add(new Pengeluaran(id, itemName, quantity, totalPrice, date, category));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return pengeluaranList;
+}
+
 
 
 
