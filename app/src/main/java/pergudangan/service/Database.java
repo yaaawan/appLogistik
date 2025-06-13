@@ -865,3 +865,26 @@ public static List<PenerimaanItem> getPenerimaanItems(String noTerima) {
 
 
 
+
+
+
+public static boolean addStockItem(StockItem newItem) {
+    String sql = "INSERT INTO stock (item_name, quantity, unit, purchase_price, selling_price, category) VALUES (?, ?, ?, ?, ?, ?)";
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, newItem.getItemName());
+        pstmt.setInt(2, newItem.getQuantity());
+        pstmt.setString(3, newItem.getUnit());
+        pstmt.setDouble(4, newItem.getPurchasePrice());
+        pstmt.setDouble(5, newItem.getSellingPrice());
+        pstmt.setString(6, newItem.getCategory());
+        pstmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
+
