@@ -665,3 +665,73 @@ public static List<Penerimaan> getAllPenerimaan() {
 
     return list;
 }
+
+
+
+
+public static PurchaseOrder getPOByNumber(String poNumber) {
+    if (poNumber == null || poNumber.trim().isEmpty()) {
+        System.err.println("PO Number tidak boleh kosong");
+        return null;
+    }
+    
+    PurchaseOrder po = null;
+    String query = "SELECT po_number, supplier, date, total, status FROM purchase_orders WHERE po_number = ?";
+    
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = Database.connect();
+        if (conn == null) {
+            System.err.println("Koneksi database gagal");
+            return null;
+        }
+        
+        stmt = conn.prepareStatement(query);
+        stmt.setString(1, poNumber.trim());
+        rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            po = new PurchaseOrder();
+            po.setPoNumber(rs.getString("po_number"));
+            po.setSupplier(rs.getString("supplier"));
+            
+            // Handle date dengan null check
+            java.sql.Date sqlDate = rs.getDate("date");
+            if (sqlDate != null) {
+                po.setDate(sqlDate.toLocalDate());
+            }
+            
+            po.setTotal(rs.getDouble("total"));
+            po.setStatus(rs.getString("status"));
+            
+            // Ambil items secara terpisah dengan koneksi yang sama
+            List<POItem> items = getItemsByPONumber(poNumber.trim(), conn);
+            po.setItems(items != null ? items : new ArrayList<>());
+            
+            System.out.println("PO berhasil ditemukan: " + poNumber + " dengan status: " + po.getStatus());
+        } else {
+            System.out.println("PO tidak ditemukan: " + poNumber);
+        }
+        
+    } catch (SQLException e) {
+        System.err.println("Error saat mengambil PO " + poNumber + ": " + e.getMessage());
+        e.printStackTrace();
+        po = null;
+    } finally {
+        // Tutup resources secara manual
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            System.err.println("Error saat menutup koneksi: " + e.getMessage());
+        }
+    }
+    
+    return po;
+}
+
+
