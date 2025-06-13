@@ -47,8 +47,12 @@ Form untuk membuat akun baru pengguna aplikasi.
 ### 🧑‍💼 UI Registrasi
 ![UI Register](assets/Register.png)
 ---
-
-### 3. **Penerimaan Barang (Goods Receiving)**
+### 3. **Dashboard**
+Memberikan akses langsung ke modul-modul utama seperti: Penerimaan, Pengeluaran, Purchase Order, Manajemen Stok, Pengguna, dan Laporan serta Logout atau keluar dari sistem dengan aman.
+### 🧑‍💼 UI Dashboard
+![UI Dashboard](assets/Dashbord.png)
+---
+### 4. **Penerimaan Barang (Goods Receiving)**
 Untuk mencatat barang yang diterima berdasarkan Pesanan Pembelian (PO) yang ada.
 
 **Main Components:**
@@ -74,7 +78,7 @@ Untuk mencatat barang yang diterima berdasarkan Pesanan Pembelian (PO) yang ada.
 ![UI Penerimaan Barang](assets/Penerimaan.png)
 ---
 
-### 4. **Manajemen Pengguna (User Management)**
+### 5. **Manajemen Pengguna (User Management)**
 Untuk mengelola pengguna sistem dengan akses berbasis peran.
 
 **Main Components:**
@@ -94,7 +98,7 @@ Untuk mengelola pengguna sistem dengan akses berbasis peran.
 ![UI User Management](assets/User.png)
 ---
 
-### 5. **Purchase Order (PO) Management**
+### 6. **Purchase Order (PO) Management**
 Membuat dan mengelola pesanan pembelian untuk pemasok.
 
 **Main Components:**
@@ -123,7 +127,7 @@ Membuat dan mengelola pesanan pembelian untuk pemasok.
 ![UI Purchase Order (PO)](assets/PO2.png)
 ---
 
-### 6. **Pengeluaran Barang (Stock Out)**
+### 7. **Pengeluaran Barang (Stock Out)**
 Untuk memproses inventaris keluar berdasarkan nama dan kategori item.
 
 **Main Components:**
@@ -146,7 +150,7 @@ Untuk memproses inventaris keluar berdasarkan nama dan kategori item.
 ![Pengeluaran Barang](assets/Pengeluaran.png)
 ---
 
-## 7. **Fitur Laporan Pengeluaran**
+## 8. **Fitur Laporan Pengeluaran**
 **Tampilan:** Laporan Pengeluaran  
 **Deskripsi:** Menyajikan laporan analisis pengeluaran gudang berdasarkan rentang tanggal.
 ### Fitur:
@@ -173,7 +177,7 @@ Untuk memproses inventaris keluar berdasarkan nama dan kategori item.
 ![Laporan Pengeluaran](assets/Laporan.png)
 ---
 
-## 8. **Fitur Manajemen Stok Barang**
+## 9. **Fitur Manajemen Stok Barang**
 **Tampilan:** Manajemen Stok  
 **Deskripsi:** Form dan tabel untuk mengelola informasi stok barang di gudang.
 
