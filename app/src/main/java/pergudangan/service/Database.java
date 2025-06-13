@@ -829,3 +829,39 @@ public static boolean updatePOStatus(String poNumber, String statusBaru) {
 }
 
 
+
+public static List<PenerimaanItem> getPenerimaanItems(String noTerima) {
+    List<PenerimaanItem> items = new ArrayList<>();
+    String sql = "SELECT * FROM penerimaan_item WHERE no_terima = ?";
+    
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, noTerima);
+        ResultSet rs = pstmt.executeQuery();
+        
+        while (rs.next()) {
+            PenerimaanItem item = new PenerimaanItem();
+            item.setId(rs.getInt("id"));  
+            item.setNoTerima(rs.getString("no_terima"));
+            item.setNamaBarang(rs.getString("nama_barang"));
+            item.setQtyPO(rs.getInt("qty_dipesan")); 
+            item.setQtyDiterima(rs.getInt("qty_diterima"));
+            item.setSatuan(rs.getString("satuan"));
+            item.setKondisi(rs.getString("kondisi"));
+            item.setKeterangan(rs.getString("keterangan"));
+            item.setHargaSatuan(rs.getBigDecimal("harga_satuan"));  
+            item.setTotalHarga(rs.getBigDecimal("total_harga"));   
+            
+            items.add(item);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error getting penerimaan items: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    return items;
+}
+
+
+
