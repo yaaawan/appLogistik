@@ -1,6 +1,6 @@
 # Logistik
 # 📦 Pergudangan - Aplikasi Logistik
-Modul ini merupakan bagian dari sistem **Aplikasi Logistik** yang berfokus pada proses **manajemen pergudangan**. Tujuan utamanya adalah untuk mengelola arus keluar masuk barang di gudang secara efektif dan efisien, serta meminimalkan kesalahan pencatatan dan kehilangan stok.
+Pergudangan adalah aplikasi logistik berbasis Java yang dirancang untuk membantu proses manajemen penerimaan barang, pencatatan purchase order (PO), pengelolaan stok, serta pengelolaan data pengguna. Aplikasi ini dibangun dengan prinsip Object-Oriented Programming (OOP) untuk menciptakan struktur kode yang modular, terorganisir, dan mudah dikembangkan. Dengan antarmuka modern berbasis JavaFX, sistem ini dirancang untuk digunakan oleh admin gudang maupun staf logistik guna meningkatkan efisiensi, akurasi, dan kecepatan dalam operasional pergudangan. Aplikasi ini secara khusus berfokus pada pengelolaan arus keluar-masuk barang di gudang secara efektif dan efisien, serta bertujuan meminimalkan kesalahan pencatatan dan potensi kehilangan stok.
 
 ---
 # 🧾 Fitur Aplikasi
@@ -49,7 +49,7 @@ Form untuk membuat akun baru pengguna aplikasi.
 ---
 
 ### 3. **Penerimaan Barang (Goods Receiving)**
-Form to record goods received based on existing Purchase Orders (PO).
+Untuk mencatat barang yang diterima berdasarkan Pesanan Pembelian (PO) yang ada.
 
 **Main Components:**
 - **Auto-generated No Penerimaan**
@@ -75,7 +75,7 @@ Form to record goods received based on existing Purchase Orders (PO).
 ---
 
 ### 4. **Manajemen Pengguna (User Management)**
-Form to manage system users with role-based access.
+Untuk mengelola pengguna sistem dengan akses berbasis peran.
 
 **Main Components:**
 - **Search Bar** to filter users
@@ -95,7 +95,7 @@ Form to manage system users with role-based access.
 ---
 
 ### 5. **Purchase Order (PO) Management**
-Create and manage purchase orders for suppliers.
+Membuat dan mengelola pesanan pembelian untuk pemasok.
 
 **Main Components:**
 - **Auto-generated No PO**
@@ -124,7 +124,7 @@ Create and manage purchase orders for suppliers.
 ---
 
 ### 6. **Pengeluaran Barang (Stock Out)**
-Form to process outgoing inventory based on item name and category.
+Untuk memproses inventaris keluar berdasarkan nama dan kategori item.
 
 **Main Components:**
 - **Input Fields:**
@@ -209,7 +209,7 @@ Form to process outgoing inventory based on item name and category.
     - Harga Beli
     - Harga Jual
     - Kategori
-    - 
+      
 ### **UI Manajemen Stok Barang**
 ![Manajemen Stok Barang](assets/Stok.png)
 ---
@@ -223,15 +223,6 @@ Form to process outgoing inventory based on item name and category.
   - 🟧 Edit
   - ⚪ Neutral (Cancel / Dashboard)
 - Table-first approach for quick data visibility and interaction.
-
----
-
-## 📌 Future Enhancements (Suggested)
-
-- Authentication & Authorization per role
-- Notification system for low stock or pending PO
-- Export to PDF/Excel features
-- RESTful API integration
 
 ---
 
