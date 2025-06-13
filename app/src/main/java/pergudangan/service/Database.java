@@ -529,3 +529,16 @@ public static List<PurchaseOrder> getPOByStatus(String status) {
     
     return list;
 }
+
+
+public static String convertPenerimaanItemsToText(List<PenerimaanItem> items) {
+    StringBuilder sb = new StringBuilder();
+    for (PenerimaanItem item : items) {
+        sb.append(item.getNamaBarang()).append(":")
+          .append(item.getQtyPO()).append(":")
+          .append(item.getQtyDiterima()).append(":")
+          .append(item.getSatuan()).append(":")
+          .append(item.getKondisi()).append(":")
+          .append(item.getKeterangan()).append(";");
+    }
+    return sb.toString();
