@@ -587,3 +587,33 @@ public static boolean savePenerimaan(Penerimaan penerimaan) {
     }
 
 }
+
+
+
+public static List<PenerimaanItem> getItemsByNoTerima(String noTerima) {
+    List<PenerimaanItem> items = new ArrayList<>();
+    String sql = "SELECT * FROM penerimaan_items WHERE no_terima = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, noTerima);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            PenerimaanItem item = new PenerimaanItem(
+                rs.getString("nama_barang"),
+                rs.getInt("qty_po"),
+                rs.getInt("qty_diterima"),
+                rs.getString("satuan"),
+                rs.getString("kondisi"),
+                rs.getString("keterangan")
+            );
+            items.add(item);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error fetching items: " + e.getMessage());
+    }
+
+    return items;
+}
