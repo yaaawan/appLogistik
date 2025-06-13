@@ -332,3 +332,52 @@ public static boolean insertPurchaseOrder(PurchaseOrder po) {
         return false;
     }
 }
+     public static List<PurchaseOrder> getAllPurchaseOrders() {
+        List<PurchaseOrder> list = new ArrayList<>();
+        String sql = "SELECT * FROM purchase_order ORDER BY id";
+        try (Connection conn = connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String poNumber = rs.getString("po_number");
+                LocalDate date = LocalDate.parse(rs.getString("tanggal"));
+                String supplier = rs.getString("supplier");
+                String itemsText = rs.getString("items");
+                List<POItem> items = parseItemsText(itemsText);
+                String keterangan = rs.getString("keterangan");
+                String status = rs.getString("status");
+                double total = rs.getDouble("total");
+
+                PurchaseOrder po = new PurchaseOrder(poNumber, supplier, date, status, keterangan, total, items);
+                list.add(po);
+            }
+        } catch (SQLException e) {
+            System.err.println("Gagal mengambil daftar PO: " + e.getMessage());
+        }
+        return list;
+    }
+
+ public static boolean deletePurchaseOrder(String poNumber) {
+    String deletePOSql = "DELETE FROM purchase_order WHERE po_number = ?";
+    
+    try (Connection conn = connect(); 
+         PreparedStatement pstmtPO = conn.prepareStatement(deletePOSql)) {
+        
+        pstmtPO.setString(1, poNumber);
+        int affectedRows = pstmtPO.executeUpdate();
+        
+        if (affectedRows > 0) {
+            System.out.println("PO " + poNumber + " berhasil dihapus.");
+            return true;
+        } else {
+            System.err.println("PO " + poNumber + " tidak ditemukan.");
+            return false;
+        }
+        
+    } catch (SQLException e) {
+        System.err.println("Gagal menghapus PO: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
+    
+
+
