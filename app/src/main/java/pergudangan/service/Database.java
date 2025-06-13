@@ -202,3 +202,94 @@ private static void createPenerimaanTables() {
            category TEXT
        );
     """;
+
+     try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+        stmt.execute(sql);
+        System.out.println("Tabel 'stock' berhasil dibuat atau sudah ada.");
+    } catch (SQLException e) {
+        System.err.println("Gagal membuat tabel 'stock': " + e.getMessage());
+    }
+}
+
+  
+private static void createPengeluaranTable() {
+        String sql = """
+            CREATE TABLE pengeluaran (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                item_name TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                total_price REAL NOT NULL,
+                date TIMESTAMP NOT NULL,
+                category TEXT NOT NULL
+            );
+        """;
+        executeCreateTable(sql, "pengeluaran");
+    }
+
+
+    private static void executeCreateTable(String sql, String tableName) {
+        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Tabel '" + tableName + "' berhasil dibuat atau sudah ada.");
+        } catch (SQLException e) {
+            System.err.println("Gagal membuat tabel '" + tableName + "': " + e.getMessage());
+        }
+    }
+
+
+
+    public static boolean insertUser(User user) {
+        String sql = "INSERT INTO users(name, password, role, status) VALUES (?, ?, ?, ?)";
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getRole());
+            stmt.setString(4, user.getStatus());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            if (e.getMessage().contains("UNIQUE constraint failed")) {
+                System.err.println("User '" + user.getName() + "' sudah ada di database.");
+            } else {
+                System.err.println("Gagal menambahkan user: " + e.getMessage());
+            }
+            return false;
+        }
+    }
+
+    public static User validateLogin(String name, String password) {
+        String sql = "SELECT * FROM users WHERE name = ? AND password = ?";
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                    rs.getString("name"),
+                    rs.getString("password"),
+                    rs.getString("role"),
+                    rs.getString("status")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Gagal melakukan login: " + e.getMessage());
+        }
+        return null;
+    }
+
+
+   
+
+    private static boolean executeInsert(String sql, String tanggal, double jumlah, String keterangan, String user) {
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tanggal);
+            stmt.setDouble(2, jumlah);
+            stmt.setString(3, keterangan);
+            stmt.setString(4, user);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Gagal menyisipkan data: " + e.getMessage());
+            return false;
+        }
+    }
