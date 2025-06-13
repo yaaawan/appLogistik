@@ -542,3 +542,21 @@ public static String convertPenerimaanItemsToText(List<PenerimaanItem> items) {
           .append(item.getKeterangan()).append(";");
     }
     return sb.toString();
+}
+public static boolean savePenerimaan(Penerimaan penerimaan) {
+    
+    String sqlPenerimaan = "INSERT INTO penerimaan (no_terima, no_po, supplier, tanggal, catatan) VALUES (?, ?, ?, ?, ?)";
+    String sqlItem = "INSERT INTO penerimaan_items (no_terima, nama_barang, qty_po, qty_diterima, satuan, kondisi, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = connect()) {
+        conn.setAutoCommit(false); // Mulai transaksi
+
+        // Simpan data utama penerimaan
+        try (PreparedStatement pstmtPenerimaan = conn.prepareStatement(sqlPenerimaan)) {
+            pstmtPenerimaan.setString(1, penerimaan.getNoTerima());
+            pstmtPenerimaan.setString(2, penerimaan.getNoPO());
+            pstmtPenerimaan.setString(3, penerimaan.getSupplier());
+            pstmtPenerimaan.setString(4, penerimaan.getTanggal().toString());
+            pstmtPenerimaan.setString(5, penerimaan.getCatatan());
+            pstmtPenerimaan.executeUpdate();
+        }
