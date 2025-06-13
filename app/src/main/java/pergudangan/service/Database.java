@@ -887,4 +887,40 @@ public static boolean addStockItem(StockItem newItem) {
 }
 
 
+public static boolean incrementStock(String namaBarang, int jumlah, String satuan, double purchasePrice, double sellingPrice, String category) {
+    String selectSql = "SELECT quantity FROM stock WHERE item_name = ?";
+    String updateSql = "UPDATE stock SET quantity = quantity + ? WHERE item_name = ?";
+    String insertSql = "INSERT INTO stock (item_name, quantity, unit, purchase_price, selling_price, category) VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = connect()) {
+        PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+        selectStmt.setString(1, namaBarang);
+        ResultSet rs = selectStmt.executeQuery();
+
+        if (rs.next()) {
+            // Barang sudah ada, update hanya quantity
+            PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+            updateStmt.setInt(1, jumlah);
+            updateStmt.setString(2, namaBarang);
+            updateStmt.executeUpdate();
+        } else {
+            // Barang belum ada, insert semua detail
+            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+            insertStmt.setString(1, namaBarang);
+            insertStmt.setInt(2, jumlah);
+            insertStmt.setString(3, satuan);
+            insertStmt.setDouble(4, purchasePrice);
+            insertStmt.setDouble(5, sellingPrice);
+            insertStmt.setString(6, category);
+            insertStmt.executeUpdate();
+        }
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
+
 
