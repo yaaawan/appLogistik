@@ -1097,6 +1097,53 @@ public static boolean insertPengeluaran(Pengeluaran p) {
     }
 }
 
+public static boolean deletePengeluaran(Pengeluaran pengeluaran) {
+    String sql = "DELETE FROM pengeluaran WHERE id = ?";
+    boolean success = false;
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setInt(1, pengeluaran.getId());
+        pstmt.executeUpdate();
+        success = true;
+
+        // Update stock quantity
+        StockItem stockItem = getStockItemByName(pengeluaran.getItemName());
+        if (stockItem != null) {
+            stockItem.setQuantity(stockItem.getQuantity() + pengeluaran.getQuantity());
+            updateStockItem(stockItem); // Update the stock in the database
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return success;
+}
+
+public static boolean updatePengeluaran(Pengeluaran pengeluaran) {
+    String sql = "UPDATE pengeluaran SET item_name = ?, quantity = ?, total_price = ?, date = ?, category = ? WHERE id = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, pengeluaran.getItemName());
+        pstmt.setInt(2, pengeluaran.getQuantity());
+        pstmt.setDouble(3, pengeluaran.getTotalPrice());
+        pstmt.setTimestamp(4, Timestamp.valueOf(pengeluaran.getDate().atStartOfDay()));
+        pstmt.setString(5, pengeluaran.getCategory());
+        pstmt.setInt(6, pengeluaran.getId());
+
+        pstmt.executeUpdate();
+        return true;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+    
+    
+}
 
 
 
