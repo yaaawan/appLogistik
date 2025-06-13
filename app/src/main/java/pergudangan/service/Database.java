@@ -921,6 +921,23 @@ public static boolean incrementStock(String namaBarang, int jumlah, String satua
     }
 }
 
+public static boolean updateStockItem(StockItem updatedItem) {
+    String sql = "UPDATE stock SET quantity = ?, unit = ?, purchase_price = ?, selling_price = ?, category = ? WHERE item_name = ?";
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, updatedItem.getQuantity());
+        pstmt.setString(2, updatedItem.getUnit());
+        pstmt.setDouble(3, updatedItem.getPurchasePrice());
+        pstmt.setDouble(4, updatedItem.getSellingPrice());
+        pstmt.setString(5, updatedItem.getCategory());
+        pstmt.setString(6, updatedItem.getItemName());
+        return pstmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 
 
