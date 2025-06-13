@@ -230,8 +230,8 @@ Untuk memproses inventaris keluar berdasarkan nama dan kategori item.
 ```
 src/main/java/pergudangan
 └── app/
-├── Main.java # Entry point aplikasi
-├── controller/ # Mengelola alur logika UI dan proses bisnis
+│ └──  Main.java (Entry point aplikasi)
+├── controller/ (Mengelola alur logika UI 
 │ ├── DashboardController.java
 │ ├── LaporanPengeluaranController.java
 │ ├── LoginController.java
@@ -241,7 +241,7 @@ src/main/java/pergudangan
 │ ├── RegisterController.java
 │ ├── StokController.java
 │ └── UserManagementController.java
-├── model/ # Berisi class untuk representasi data
+├── model/ (Berisi class untuk representasi data)
 │ ├── AbstractUser.java
 │ ├── AdminUser.java
 │ ├── POItem.java
@@ -252,9 +252,9 @@ src/main/java/pergudangan
 │ ├── StockItem.java
 │ ├── User.java
 │ └── UserData.java
-├── service/ # Layer untuk service dan koneksi database
+├── service/ (Layer untuk service dan koneksi database)
 │ └── Database.java
-└── utils/ # Kelas bantu (utility)
+└── utils/ (Kelas bantu/utility)
   └── SceneManager.java
 ```
 ### 🚀 Cara Menjalankan Aplikasi
@@ -292,8 +292,8 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml'] 
     } 
 ```
-5. Jalankan dengan membuka terminal lalu ketik (./gradlew run)
-6. Saat dijalankan pertama kali, program akan otomatis membuat file database.db di folder resources/ jika belum ada.
+6. Jalankan dengan membuka terminal lalu ketik (./gradlew run)
+7. Saat dijalankan pertama kali, program akan otomatis membuat file database.db di folder resources/ jika belum ada.
 
 ---
 ## 🎯 Penerapan Prinsip OOP
