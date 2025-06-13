@@ -291,11 +291,11 @@ javafx {
     version = "21" (Sesuaikan versi java JDK yang digunakan) 
     modules = ['javafx.controls', 'javafx.fxml'] 
     } 
-    
+```
 5. Jalankan dengan membuka terminal lalu ketik (./gradlew run)
 6. Saat dijalankan pertama kali, program akan otomatis membuat file database.db di folder resources/ jika belum ada.
 
-```
+---
 ## 🎯 Penerapan Prinsip OOP
 Struktur kode dalam proyek ini menerapkan empat pilar utama OOP:
 ## 🔐 Encapsulation
