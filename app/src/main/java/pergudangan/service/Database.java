@@ -293,3 +293,42 @@ private static void createPengeluaranTable() {
             return false;
         }
     }
+
+
+public static boolean insertPurchaseOrder(PurchaseOrder po) {
+        String sql = "INSERT INTO purchase_order (po_number, tanggal, supplier, items, keterangan, status, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, po.getPoNumber());
+            stmt.setString(2, po.getDate().toString());
+            stmt.setString(3, po.getSupplier());
+            stmt.setString(4, po.formatItemsText()); // pastikan tersedia di PurchaseOrder
+            stmt.setString(5, po.getKeterangan());
+            stmt.setString(6, po.getStatus());
+            stmt.setDouble(7, po.getTotal());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Gagal insert PO: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean updatePurchaseOrder(PurchaseOrder po) {
+    String sql = "UPDATE purchase_order SET tanggal = ?, supplier = ?, items = ?, keterangan = ?, status = ?, total = ? WHERE po_number = ?";
+    try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, po.getDate().toString());
+        stmt.setString(2, po.getSupplier());
+        stmt.setString(3, po.formatItemsText());
+        stmt.setString(4, po.getKeterangan());
+        stmt.setString(5, po.getStatus());
+        stmt.setDouble(6, po.getTotal());
+        stmt.setString(7, po.getPoNumber());
+
+        int rowsUpdated = stmt.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        System.err.println("Gagal mengupdate PO: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
