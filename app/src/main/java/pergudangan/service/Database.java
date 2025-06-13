@@ -496,3 +496,36 @@ public static boolean checkIfPONumberExists(String poNumber) {
     }
     return items;
 }
+
+
+
+public static List<PurchaseOrder> getPOByStatus(String status) {
+    List<PurchaseOrder> list = new ArrayList<>();
+    String sql = "SELECT * FROM purchase_order WHERE status = ? ORDER BY tanggal DESC";
+    
+    try (Connection conn = connect(); 
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, status);
+        ResultSet rs = pstmt.executeQuery();
+        
+        while (rs.next()) {
+            String poNumber = rs.getString("po_number");
+            LocalDate date = LocalDate.parse(rs.getString("tanggal"));
+            String supplier = rs.getString("supplier");
+            String itemsText = rs.getString("items");
+            List<POItem> items = parseItemsText(itemsText);
+            String keterangan = rs.getString("keterangan");
+            String poStatus = rs.getString("status");
+            double total = rs.getDouble("total");
+            
+            PurchaseOrder po = new PurchaseOrder(poNumber, supplier, date, poStatus, keterangan, total, items);
+            list.add(po);
+        }
+    } catch (SQLException e) {
+        System.err.println("Gagal mengambil PO berdasarkan status: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    return list;
+}
