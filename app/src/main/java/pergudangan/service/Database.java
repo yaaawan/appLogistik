@@ -1145,6 +1145,23 @@ public static boolean updatePengeluaran(Pengeluaran pengeluaran) {
     
 }
 
+public static boolean updatePengeluaranCategory(int id, String newCategory) {
+    String sql = "UPDATE pengeluaran SET category = ? WHERE id = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, newCategory);
+        pstmt.setInt(2, id);
+
+        return pstmt.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 
 
