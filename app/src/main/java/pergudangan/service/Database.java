@@ -1190,6 +1190,21 @@ public static List<Pengeluaran> getPengeluaranByDateRange(LocalDate startDate, L
     return pengeluaranList;
 }
 
+public static boolean deleteUser(String username) {
+    String sql = "DELETE FROM users WHERE name = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, username);
+        int affectedRows = stmt.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        System.err.println("Error menghapus user dari DB: " + e.getMessage());
+        return false;
+    }
+}
+}
+
 
 
 
