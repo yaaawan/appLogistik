@@ -735,3 +735,48 @@ public static PurchaseOrder getPOByNumber(String poNumber) {
 }
 
 
+public static boolean hapusPenerimaan(String noTerima) {
+    if (noTerima == null || noTerima.trim().isEmpty()) {
+        System.err.println("No Terima tidak boleh kosong");
+        return false;
+    }
+
+    String deleteDetail = "DELETE FROM penerimaan_items WHERE no_terima = ?"; // Perbaiki nama tabel
+    String deleteHeader = "DELETE FROM penerimaan WHERE no_terima = ?";
+
+    Connection conn = null;
+    PreparedStatement stmtDetail = null;
+    PreparedStatement stmtHeader = null;
+
+    try {
+        conn = Database.connect();
+        if (conn == null) {
+            System.err.println("Koneksi database gagal");
+            return false;
+        }
+
+        conn.setAutoCommit(false); 
+
+        // Hapus detail penerimaan
+        stmtDetail = conn.prepareStatement(deleteDetail);
+        stmtDetail.setString(1, noTerima.trim());
+        int deletedDetails = stmtDetail.executeUpdate();
+        System.out.println("Detail penerimaan dihapus: " + deletedDetails + " records");
+
+        // Hapus header penerimaan
+        stmtHeader = conn.prepareStatement(deleteHeader);
+        stmtHeader.setString(1, noTerima.trim());
+        int deletedHeaders = stmtHeader.executeUpdate();
+        System.out.println("Header penerimaan dihapus: " + deletedHeaders + " records");
+
+        conn.commit(); 
+
+        boolean success = deletedHeaders > 0;
+        if (success) {
+            System.out.println("Penerimaan " + noTerima + " berhasil dihapus");
+        } else {
+            System.out.println("Penerimaan " + noTerima + " tidak ditemukan untuk dihapus");
+        }
+
+        return success;
+
