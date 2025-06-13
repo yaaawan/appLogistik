@@ -3,8 +3,50 @@
 Modul ini merupakan bagian dari sistem **Aplikasi Logistik** yang berfokus pada proses **manajemen pergudangan**. Tujuan utamanya adalah untuk mengelola arus keluar masuk barang di gudang secara efektif dan efisien, serta meminimalkan kesalahan pencatatan dan kehilangan stok.
 
 ---
-### 🧾 Fitur Aplikasi
+## 🧾 Fitur Aplikasi
+### 🖥️ Tampilan: **Login**
+**Deskripsi**:  
+Halaman awal untuk masuk ke dalam sistem manajemen pergudangan.
+### 🔧 Fitur:
+- 🔐 **Form Login:**
+  - Input `Username`
+  - Input `Password`
 
+- 👁️‍🗨️ **Show Password:**
+  - Checkbox untuk menampilkan atau menyembunyikan teks password.
+
+- 🔓 **Sign In:**
+  - Tombol untuk memverifikasi akun dan mengakses dashboard pengguna.
+
+- ➕ **Create Account:**
+  - Tombol navigasi menuju halaman registrasi akun baru.
+
+### 🧑‍💼 UI Login
+![UI Login](assets/Login.png)
+---
+
+### 🖥️ Tampilan: **Registrasi Pengguna**
+**Deskripsi**:  
+Form untuk membuat akun baru pengguna aplikasi.
+
+### 🔧 Fitur:
+- 📋 **Form Registrasi:**
+  - Input `Username`
+  - Input `Password`
+  - Input `Konfirmasi Password`
+
+- 👁️ **Tampilkan Password:**
+  - Checkbox untuk menampilkan password dan konfirmasi password.
+
+- ✅ **Daftar:**
+  - Tombol untuk menyimpan akun baru ke sistem.
+
+- ↩️ **Kembali:**
+  - Tombol untuk kembali ke halaman login.
+
+### 🧑‍💼 UI Register
+![UI Register](assets/Register.png)
+---
 ### 1. 📥 Penerimaan Barang (Goods Receiving)
 Form to record goods received based on existing Purchase Orders (PO).
 
@@ -26,7 +68,9 @@ Form to record goods received based on existing Purchase Orders (PO).
   - Lihat
   - Batal
   - Kembali
-
+  - 
+### 🧑‍💼 UI Penerimaan Barang
+![UI Penerimaan Barang](assets/Penerimaan.png)
 ---
 
 ### 2. 👤 Manajemen Pengguna (User Management)
@@ -45,6 +89,8 @@ Form to manage system users with role-based access.
   - Refresh Data
   - Clear Search
 
+### 🧑‍💼 UI User Management
+![UI User Management](assets/User.png)
 ---
 
 ### 3. 📑 Purchase Order (PO) Management
@@ -71,6 +117,9 @@ Create and manage purchase orders for suppliers.
   - Lihat PO
   - Dashboard
 
+### 🧑‍💼 UI Purchase Order (PO)
+![UI Purchase Order (PO)](assets/PO1.png)
+![UI Purchase Order (PO)](assets/PO2.png)
 ---
 
 ### 4. 📤 Pengeluaran Barang (Stock Out)
@@ -92,6 +141,8 @@ Form to process outgoing inventory based on item name and category.
   - Lihat Pengeluaran
   - Kembali ke Dashboard
 
+### 🧑‍💼 UI Pengeluaran Barang
+![Pengeluaran Barang](assets/Pengeluaran.png)
 ---
 
 ## 🎨 UI/UX Consistency
