@@ -99,3 +99,106 @@ private static void createPenerimaanTables() {
             total REAL
         );
     """;
+
+        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+        stmt.execute(sql);
+        System.out.println("Tabel purchase_order siap.");
+    } catch (SQLException e) {
+        System.err.println("Gagal membuat tabel: " + e.getMessage());
+    }
+}
+
+
+
+
+  public static void createPengeluaranTables() {
+    String createInventoryTable = """
+        CREATE TABLE IF NOT EXISTS inventory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            kode_barang VARCHAR(50) UNIQUE NOT NULL,
+            nama_barang VARCHAR(255) NOT NULL,
+            jumlah INT NOT NULL CHECK (jumlah >= 0),
+            satuan VARCHAR(20),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """;
+
+    String createPengeluaranTable = """
+        CREATE TABLE IF NOT EXISTS pengeluaran (
+            no_keluar VARCHAR(50) PRIMARY KEY,
+            tanggal DATE NOT NULL,
+            tujuan VARCHAR(255) NOT NULL,
+            pic VARCHAR(100) NOT NULL,
+            catatan TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """;
+
+    String createPengeluaranItemsTable = """
+        CREATE TABLE IF NOT EXISTS pengeluaran_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            no_keluar VARCHAR(50) NOT NULL,
+            kode_barang VARCHAR(50) NOT NULL,
+            nama_barang VARCHAR(255) NOT NULL,
+            jumlah INT NOT NULL CHECK (jumlah >= 0),
+            qty_keluar INT NOT NULL CHECK (qty_keluar >= 0),
+            stok_tersedia INT DEFAULT 0 CHECK (stok_tersedia >= 0),
+            harga_satuan DECIMAL(15,2) NOT NULL,
+            total_harga DECIMAL(15,2) NOT NULL,
+            satuan VARCHAR(20) NOT NULL,
+            keterangan TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (no_keluar) REFERENCES pengeluaran(no_keluar) ON DELETE CASCADE,
+            FOREIGN KEY (kode_barang) REFERENCES inventory(kode_barang) ON UPDATE CASCADE ON DELETE RESTRICT
+        );
+    """;
+
+    String createTriggerUpdateTimestamp = """
+        CREATE TRIGGER trg_pengeluaran_items_updated
+        AFTER UPDATE ON pengeluaran_items
+        FOR EACH ROW
+        BEGIN
+            UPDATE pengeluaran_items
+            SET updated_at = CURRENT_TIMESTAMP
+            WHERE id = NEW.id;
+        END
+    """;
+
+    try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+        stmt.execute(createInventoryTable);
+        System.out.println("Tabel 'inventory' berhasil dibuat atau sudah ada.");
+
+        stmt.execute(createPengeluaranTable);
+        System.out.println("Tabel 'pengeluaran' berhasil dibuat atau sudah ada.");
+
+        stmt.execute(createPengeluaranItemsTable);
+        System.out.println("Tabel 'pengeluaran_items' berhasil dibuat atau sudah ada.");
+
+        // Buat trigger, tapi cek dulu apakah sudah ada
+        try {
+            stmt.execute(createTriggerUpdateTimestamp);
+            System.out.println("Trigger 'trg_pengeluaran_items_updated' berhasil dibuat.");
+        } catch (SQLException e) {
+            // Biasanya error karena trigger sudah ada, jadi bisa diabaikan
+            System.out.println("Trigger 'trg_pengeluaran_items_updated' sudah ada, dilewati.");
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Error creating tables atau trigger: " + e.getMessage());
+    }
+}
+
+
+
+  public static void createStokItemTables() {
+    String sql = """
+       CREATE TABLE IF NOT EXISTS stock (
+           item_name TEXT PRIMARY KEY,
+           quantity INTEGER,
+           unit TEXT,
+           purchase_price REAL,
+           selling_price REAL,
+           category TEXT
+       );
+    """;
