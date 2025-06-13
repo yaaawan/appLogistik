@@ -1052,6 +1052,52 @@ public static boolean insertOrUpdateStockItem(StockItem item) {
     }
 }
 
+public static List<Pengeluaran> getAllPengeluaran() {
+    List<Pengeluaran> pengeluaranList = new ArrayList<>();
+    String sql = "SELECT id, item_name, quantity, total_price, date, category FROM pengeluaran ORDER BY date DESC";
+
+    try (Connection conn = connect(); 
+         PreparedStatement stmt = conn.prepareStatement(sql); 
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String itemName = rs.getString("item_name");
+            int quantity = rs.getInt("quantity");
+            double totalPrice = rs.getDouble("total_price");
+            LocalDate date = rs.getTimestamp("date").toLocalDateTime().toLocalDate();
+            String category = rs.getString("category");
+
+            pengeluaranList.add(new Pengeluaran(id, itemName, quantity, totalPrice, date, category));
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return pengeluaranList;
+}
+public static boolean insertPengeluaran(Pengeluaran p) {
+    String sql = "INSERT INTO pengeluaran (item_name, quantity, total_price, date, category) VALUES (?, ?, ?, ?, ?)";
+
+    try (Connection conn = connect(); 
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, p.getItemName());
+        stmt.setInt(2, p.getQuantity());
+        stmt.setDouble(3, p.getTotalPrice());
+        stmt.setTimestamp(4, Timestamp.valueOf(p.getDate().atStartOfDay()));
+        stmt.setString(5, p.getCategory());
+
+        return stmt.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
 
 
 
