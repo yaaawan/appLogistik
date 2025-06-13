@@ -459,3 +459,40 @@ public static List<POItem> parseItemsText(String itemsText) {
     }
     return itemList;
 }
+
+
+
+public static boolean checkIfPONumberExists(String poNumber) {
+    String sql = "SELECT COUNT(*) FROM purchase_order WHERE po_number = ?";
+    try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, poNumber);
+        ResultSet rs = stmt.executeQuery();
+        return rs.next() && rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        System.err.println("Gagal mengecek keberadaan PO: " + e.getMessage());
+        return false;
+    }
+}
+
+     
+       
+    private static List<POItem> getItemsByPONumber(String poNumber, Connection conn) throws SQLException {
+    List<POItem> items = new ArrayList<>();
+    String sqlItems = "SELECT id, nama, qty, satuan, harga FROM po_items WHERE po_number = ?";
+    try (PreparedStatement pstmt = conn.prepareStatement(sqlItems)) {
+        pstmt.setString(1, poNumber);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String id = rs.getString("id");  // Ubah jadi String
+                String nama = rs.getString("nama");
+                int qty = rs.getInt("qty");
+                String satuan = rs.getString("satuan");
+                double harga = rs.getDouble("harga");
+
+                POItem item = new POItem(id, nama, qty, satuan, harga);
+                items.add(item);
+            }
+        }
+    }
+    return items;
+}
