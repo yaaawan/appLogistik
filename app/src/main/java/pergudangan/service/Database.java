@@ -780,3 +780,32 @@ public static boolean hapusPenerimaan(String noTerima) {
 
         return success;
 
+        } catch (SQLException e) {
+        System.err.println("Error saat menghapus penerimaan " + noTerima + ": " + e.getMessage());
+        e.printStackTrace();
+
+        // rollback transaksi jika error
+        if (conn != null) {
+            try {
+                conn.rollback();
+                System.out.println("Transaction rollback berhasil");
+            } catch (SQLException rollbackEx) {
+                System.err.println("Error saat rollback: " + rollbackEx.getMessage());
+            }
+        }
+        return false;
+
+    } finally {
+        try {
+            if (stmtDetail != null) stmtDetail.close();
+            if (stmtHeader != null) stmtHeader.close();
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error saat menutup koneksi: " + e.getMessage());
+        }
+    }
+}
+
