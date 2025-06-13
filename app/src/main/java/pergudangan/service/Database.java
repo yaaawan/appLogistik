@@ -381,3 +381,50 @@ public static boolean insertPurchaseOrder(PurchaseOrder po) {
     
 
 
+public static boolean savePO(PurchaseOrder po) {
+    String sql = "INSERT INTO purchase_order (po_number, tanggal, supplier, items, keterangan, status, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, po.getPoNumber());
+        stmt.setString(2, po.getDate().toString());
+        stmt.setString(3, po.getSupplier());
+        stmt.setString(4, po.formatItemsText()); // pastikan method ini ada di PurchaseOrder
+        stmt.setString(5, po.getKeterangan());
+        stmt.setString(6, po.getStatus());
+        stmt.setDouble(7, po.getTotal());
+        stmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.err.println("Gagal menyimpan PO: " + e.getMessage());
+        e.printStackTrace(); // Tambahkan ini untuk debug
+        return false;
+    }
+}
+
+public static List<PurchaseOrder> getAllPO() {
+    List<PurchaseOrder> list = new ArrayList<>();
+    String sql = "SELECT * FROM purchase_order ORDER BY id";
+    
+    try (Connection conn = connect(); 
+         Statement stmt = conn.createStatement(); 
+         ResultSet rs = stmt.executeQuery(sql)) {
+        
+        while (rs.next()) {
+            String poNumber = rs.getString("po_number");
+            LocalDate date = LocalDate.parse(rs.getString("tanggal"));
+            String supplier = rs.getString("supplier");
+            String itemsText = rs.getString("items");
+            List items = parseItemsText(itemsText); // Tanpa generic untuk sementara
+            String keterangan = rs.getString("keterangan");
+            String status = rs.getString("status");
+            double total = rs.getDouble("total");
+            
+            PurchaseOrder po = new PurchaseOrder(poNumber, supplier, date, status, keterangan, total, items);
+            list.add(po);
+        }
+    } catch (SQLException e) {
+        System.err.println("Gagal mengambil daftar PO: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    return list;
+}
