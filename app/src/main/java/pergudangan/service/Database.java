@@ -809,3 +809,23 @@ public static boolean hapusPenerimaan(String noTerima) {
     }
 }
 
+public static boolean updatePOStatus(String poNumber, String statusBaru) {
+    String sql = "UPDATE purchase_order SET status = ? WHERE po_number = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, statusBaru);
+        pstmt.setString(2, poNumber);
+        int rowsUpdated = pstmt.executeUpdate();
+        System.out.println("Rows updated: " + rowsUpdated); // Debug
+        return rowsUpdated > 0;
+
+    } catch (SQLException e) {
+        System.err.println("Gagal update status PO: " + e.getMessage());
+        return false;
+    }
+
+}
+
+
