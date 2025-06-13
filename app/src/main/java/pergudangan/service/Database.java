@@ -1009,6 +1009,49 @@ public static boolean deleteStockItem(String itemName) {
     }
 }
 
+public static boolean insertOrUpdateStockItem(StockItem item) {
+    String checkSql = "SELECT COUNT(*) FROM stock WHERE item_name = ?";
+    String updateSql = "UPDATE stock SET quantity = ?, unit = ?, purchase_price = ?, selling_price = ?, category = ? WHERE item_name = ?";
+    String insertSql = "INSERT INTO stock(item_name, quantity, unit, purchase_price, selling_price, category) VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (Connection conn = connect()) {
+        // Cek apakah item sudah ada
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setString(1, item.getItemName());
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                // Sudah ada → update
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                    updateStmt.setInt(1, item.getQuantity());
+                    updateStmt.setString(2, item.getUnit());
+                    updateStmt.setDouble(3, item.getPurchasePrice());
+                    updateStmt.setDouble(4, item.getSellingPrice());
+                    updateStmt.setString(5, item.getCategory());
+                    updateStmt.setString(6, item.getItemName());
+                    updateStmt.executeUpdate();
+                }
+            } else {
+                // Belum ada → insert
+                try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                    insertStmt.setString(1, item.getItemName());
+                    insertStmt.setInt(2, item.getQuantity());
+                    insertStmt.setString(3, item.getUnit());
+                    insertStmt.setDouble(4, item.getPurchasePrice());
+                    insertStmt.setDouble(5, item.getSellingPrice());
+                    insertStmt.setString(6, item.getCategory());
+                    insertStmt.executeUpdate();
+                }
+            }
+        }
+
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 
 
