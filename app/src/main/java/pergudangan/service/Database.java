@@ -617,3 +617,51 @@ public static List<PenerimaanItem> getItemsByNoTerima(String noTerima) {
 
     return items;
 }
+public static List<Penerimaan> getAllPenerimaan() {
+    List<Penerimaan> list = new ArrayList<>();
+
+    String sqlPenerimaan = "SELECT * FROM penerimaan ORDER BY tanggal DESC";
+    String sqlItems = "SELECT * FROM penerimaan_items WHERE no_terima = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement pstmtPenerimaan = conn.prepareStatement(sqlPenerimaan)) {
+
+        ResultSet rsPenerimaan = pstmtPenerimaan.executeQuery();
+
+        while (rsPenerimaan.next()) {
+            String noTerima = rsPenerimaan.getString("no_terima");
+            String noPO = rsPenerimaan.getString("no_po");
+            String supplier = rsPenerimaan.getString("supplier");
+            LocalDate tanggal = LocalDate.parse(rsPenerimaan.getString("tanggal"));
+            String catatan = rsPenerimaan.getString("catatan");
+
+            List<PenerimaanItem> items = new ArrayList<>();
+
+            try (PreparedStatement pstmtItems = conn.prepareStatement(sqlItems)) {
+                pstmtItems.setString(1, noTerima);
+                ResultSet rsItems = pstmtItems.executeQuery();
+
+                while (rsItems.next()) {
+                    String namaBarang = rsItems.getString("nama_barang");
+                    int qtyPO = rsItems.getInt("qty_po");
+                    int qtyDiterima = rsItems.getInt("qty_diterima");
+                    String satuan = rsItems.getString("satuan");
+                    String kondisi = rsItems.getString("kondisi");
+                    String keterangan = rsItems.getString("keterangan");
+
+                    PenerimaanItem item = new PenerimaanItem(namaBarang, qtyPO, qtyDiterima, satuan, kondisi, keterangan);
+                    items.add(item);
+                }
+            }
+
+            Penerimaan penerimaan = new Penerimaan(noTerima, noPO, supplier, tanggal, catatan, items);
+            list.add(penerimaan);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Gagal mengambil data penerimaan: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    return list;
+}
