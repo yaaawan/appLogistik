@@ -560,3 +560,30 @@ public static boolean savePenerimaan(Penerimaan penerimaan) {
             pstmtPenerimaan.setString(5, penerimaan.getCatatan());
             pstmtPenerimaan.executeUpdate();
         }
+
+
+
+                try (PreparedStatement pstmtItem = conn.prepareStatement(sqlItem)) {
+            for (PenerimaanItem item : penerimaan.getItems()) {
+                pstmtItem.setString(1, penerimaan.getNoTerima());
+                pstmtItem.setString(2, item.getNamaBarang());
+                pstmtItem.setInt(3, item.getQtyPO());
+                pstmtItem.setInt(4, item.getQtyDiterima());
+                pstmtItem.setString(5, item.getSatuan());
+                pstmtItem.setString(6, item.getKondisi());
+                pstmtItem.setString(7, item.getKeterangan());
+                pstmtItem.addBatch();
+            }
+            pstmtItem.executeBatch();
+        }
+
+        conn.commit(); 
+        return true;
+
+    } catch (SQLException e) {
+        System.err.println("Gagal menyimpan data penerimaan: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+
+}
