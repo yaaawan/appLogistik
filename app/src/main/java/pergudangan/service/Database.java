@@ -428,3 +428,34 @@ public static List<PurchaseOrder> getAllPO() {
     
     return list;
 }
+
+
+public static List<POItem> parseItemsText(String itemsText) {
+    List<POItem> itemList = new ArrayList<>();
+    
+    if (itemsText == null || itemsText.isBlank()) {
+        return itemList;
+    }
+    
+    String[] itemStrings = itemsText.split(";");
+    for (String itemStr : itemStrings) {
+        itemStr = itemStr.trim();
+        if (itemStr.isEmpty()) continue;
+        
+        String[] parts = itemStr.split(",");
+        if (parts.length == 5) {
+            try {
+                String id = parts[0].trim();
+                String nama = parts[1].trim();
+                int qty = Integer.parseInt(parts[2].trim());
+                String satuan = parts[3].trim();
+                double harga = Double.parseDouble(parts[4].trim());
+                
+                itemList.add(new POItem(id, nama, qty, satuan, harga));
+            } catch (NumberFormatException e) {
+                System.err.println("Format item tidak valid: " + itemStr + " -> " + e.getMessage());
+            }
+        }
+    }
+    return itemList;
+}
