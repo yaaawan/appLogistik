@@ -3,8 +3,8 @@
 Modul ini merupakan bagian dari sistem **Aplikasi Logistik** yang berfokus pada proses **manajemen pergudangan**. Tujuan utamanya adalah untuk mengelola arus keluar masuk barang di gudang secara efektif dan efisien, serta meminimalkan kesalahan pencatatan dan kehilangan stok.
 
 ---
-## 🧾 Fitur Aplikasi
-### 🖥️ Tampilan: **Login**
+# 🧾 Fitur Aplikasi
+### 1. **Login**
 **Deskripsi**:  
 Halaman awal untuk masuk ke dalam sistem manajemen pergudangan.
 ### 🔧 Fitur:
@@ -25,7 +25,7 @@ Halaman awal untuk masuk ke dalam sistem manajemen pergudangan.
 ![UI Login](assets/Login.png)
 ---
 
-### 🖥️ Tampilan: **Registrasi Pengguna**
+### 2. **Registrasi Pengguna**
 **Deskripsi**:  
 Form untuk membuat akun baru pengguna aplikasi.
 
@@ -44,10 +44,11 @@ Form untuk membuat akun baru pengguna aplikasi.
 - ↩️ **Kembali:**
   - Tombol untuk kembali ke halaman login.
 
-### 🧑‍💼 UI Register
+### 🧑‍💼 UI Registrasi
 ![UI Register](assets/Register.png)
 ---
-### 1. 📥 Penerimaan Barang (Goods Receiving)
+
+### 3. **Penerimaan Barang (Goods Receiving)**
 Form to record goods received based on existing Purchase Orders (PO).
 
 **Main Components:**
@@ -73,7 +74,7 @@ Form to record goods received based on existing Purchase Orders (PO).
 ![UI Penerimaan Barang](assets/Penerimaan.png)
 ---
 
-### 2. 👤 Manajemen Pengguna (User Management)
+### 4. **Manajemen Pengguna (User Management)**
 Form to manage system users with role-based access.
 
 **Main Components:**
@@ -93,7 +94,7 @@ Form to manage system users with role-based access.
 ![UI User Management](assets/User.png)
 ---
 
-### 3. 📑 Purchase Order (PO) Management
+### 5. **Purchase Order (PO) Management**
 Create and manage purchase orders for suppliers.
 
 **Main Components:**
@@ -122,7 +123,7 @@ Create and manage purchase orders for suppliers.
 ![UI Purchase Order (PO)](assets/PO2.png)
 ---
 
-### 4. 📤 Pengeluaran Barang (Stock Out)
+### 6. **Pengeluaran Barang (Stock Out)**
 Form to process outgoing inventory based on item name and category.
 
 **Main Components:**
@@ -141,10 +142,77 @@ Form to process outgoing inventory based on item name and category.
   - Lihat Pengeluaran
   - Kembali ke Dashboard
 
-### 🧑‍💼 UI Pengeluaran Barang
+### UI Pengeluaran Barang
 ![Pengeluaran Barang](assets/Pengeluaran.png)
 ---
 
+## 7. **Fitur Laporan Pengeluaran**
+**Tampilan:** Laporan Pengeluaran  
+**Deskripsi:** Menyajikan laporan analisis pengeluaran gudang berdasarkan rentang tanggal.
+### Fitur:
+- 📅 **Pilih Rentang Tanggal:**
+  - Input **Tanggal Mulai** dan **Tanggal Selesai** dengan kalender (date picker).
+
+- 📈 **Generate Laporan:**
+  - Tombol untuk memproses dan menampilkan data pengeluaran.
+
+- 🔙 **Kembali ke Dashboard:**
+  - Navigasi ke halaman utama.
+
+- 📋 **Tabel Data Pengeluaran:**
+  - Menampilkan data:
+    - Nama Barang
+    - Jumlah
+    - Total Harga
+    - Tanggal
+
+- 💰 **Ringkasan Total:**
+  - Menampilkan total pengeluaran yang dihitung otomatis.
+
+### **UI Laporan Pengeluaran**
+![Laporan Pengeluaran](assets/Laporan.png)
+---
+
+## 8. **Fitur Manajemen Stok Barang**
+**Tampilan:** Manajemen Stok  
+**Deskripsi:** Form dan tabel untuk mengelola informasi stok barang di gudang.
+
+### Fitur:
+- 📝 **Form Informasi Barang:**
+  - Nama Barang
+  - Kategori (Dropdown)
+  - Jumlah
+  - Satuan (kg, pcs, ltr)
+  - Harga Beli
+  - Harga Jual
+
+- 🟢 **Tambah:**
+  - Menambahkan barang baru.
+
+- 🟡 **Edit:**
+  - Mengubah informasi barang yang dipilih.
+
+- 🔴 **Hapus:**
+  - Menghapus barang dari daftar.
+
+- 🏠 **Dashboard:**
+  - Navigasi ke halaman utama.
+
+- 🔍 **Filter Kategori:**
+  - Menyaring barang berdasarkan kategori tertentu.
+
+- 📋 **Tabel Barang:**
+  - Menampilkan:
+    - Nama Barang
+    - Jumlah
+    - Satuan
+    - Harga Beli
+    - Harga Jual
+    - Kategori
+    - 
+### **UI Manajemen Stok Barang**
+![Manajemen Stok Barang](assets/Stok.png)
+---
 ## 🎨 UI/UX Consistency
 
 - Flat, modern design with consistent iconography.
