@@ -937,6 +937,40 @@ public static boolean updateStockItem(StockItem updatedItem) {
         return false;
     }
 }
+public static List<StockItem> getAllStockItems(String filterCategory) {
+    List<StockItem> stockItems = new ArrayList<>();
+    String sql = "SELECT item_name, quantity, unit, purchase_price, selling_price, category FROM stock";
+
+    if (filterCategory != null && !filterCategory.isEmpty()) {
+        sql += " WHERE category = ?";
+    }
+
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        if (filterCategory != null && !filterCategory.isEmpty()) {
+            pstmt.setString(1, filterCategory);
+        }
+
+        try (ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String name = rs.getString("item_name");
+                int quantity = rs.getInt("quantity");
+                String unit = rs.getString("unit");
+                double purchasePrice = rs.getDouble("purchase_price");
+                double sellingPrice = rs.getDouble("selling_price");
+                String category = rs.getString("category");
+
+                stockItems.add(new StockItem(name, quantity, unit, purchasePrice, sellingPrice, category));
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return stockItems;
+}
 
 
 
