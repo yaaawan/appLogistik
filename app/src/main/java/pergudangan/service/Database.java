@@ -972,6 +972,43 @@ public static List<StockItem> getAllStockItems(String filterCategory) {
     return stockItems;
 }
 
+public static StockItem getStockItemByName(String itemName) {
+    String sql = "SELECT item_name, quantity, unit, purchase_price, selling_price, category FROM stock WHERE item_name = ?";
+    try (Connection conn = connect();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, itemName);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            return new StockItem(
+                rs.getString("item_name"),
+                rs.getInt("quantity"),
+                rs.getString("unit"),
+                rs.getDouble("purchase_price"),
+                rs.getDouble("selling_price"),
+                rs.getString("category")
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+public static boolean deleteStockItem(String itemName) {
+    String sql = "DELETE FROM stock WHERE item_name = ?";
+
+    try (Connection conn = connect();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, itemName);
+        int affectedRows = stmt.executeUpdate();
+        return affectedRows > 0; // return true jika ada baris yang dihapus
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
 
 
